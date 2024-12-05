@@ -22,17 +22,17 @@ app.get("/services", async (req, res, next) => {
 // tìm máy theo id
 
 // tìm id service theo tên
-app.get("/get-services", async (req, res, next) => {
+app.get("/get_services", async (req, res, next) => {
   const { name } = req.query;
   const results = (
     await new mssql.Request().query(
       `SELECT * FROM dbo.Services WHERE service_name = '${name}'`
     )
-  ).recordset[0].service_id;
+  ).recordset[0];
   try {
     return res.status(200).json({
       message: "get name service success",
-      service_id: results,
+      service_id: results.service_id,
     });
   } catch (error) {
     console.log(error);
@@ -55,31 +55,32 @@ app.post("/machines", async (req, res, next) => {
   } catch (error) {}
 });
 
-// create a new bill
-app.post("/bills", async (req, res, next) => {
-  const { customer_id, machine_id, total_time, total_price, bill_items_array } =
-    req.body;
+// Tạo Phiếu Nhập Kho
+app.post("/purchase-receipts", async (req, res, next) => {
+  const { receipt_date, supplier, purchased_items } = req.body;
   // create a new bill
-  const insertBillQuery = `INSERT INTO Bills (customer_id, machine_id, total_time, total_price)
-    OUTPUT inserted.bill_id
-    VALUES 
-    (${customer_id}, ${machine_id}, ${total_time}, ${total_price});
-    `;
-  const results = (await new mssql.Request().query(insertBillQuery))
-    .recordset[0];
-  const { bill_id } = results;
-  //create all bill details
-  for (let i = 0; i < bill_items_array.length; i++) {
-    const insertBillDetailsQuery = `INSERT INTO BillDetails (bill_id, service_id, quantity, total_price)
-     VALUES
-     (${bill_id}, ${bill_items_array[i].service_id},  ${bill_items_array[i].quantity},  ${bill_items_array[i].total_price});`;
-    await new mssql.Request().query(insertBillDetailsQuery);
+  // ('2024-11-30', 'Nhà Cung Cấp A')
+  const insertPurchaseReceiptsQuery = `
+  INSERT INTO PurchaseReceipts (receipt_date, supplier)
+  OUTPUT inserted.receipt_id
+  VALUES 
+  ('${receipt_date}', '${supplier}');
+  `;
+  const newReceipt = (
+    await new mssql.Request().query(insertPurchaseReceiptsQuery)
+  ).recordset[0];
+  const { receipt_id } = newReceipt;
+  for (let i = 0; i < purchased_items.length; i++) {
+    const insertPurchaseReceiptDetailQuery = `
+    INSERT INTO PurchaseReceiptDetails (receipt_id, service_id, quantity, price)
+    VALUES
+     (${receipt_id}, ${purchased_items[i].service_id},  ${purchased_items[i].quantity},  ${purchased_items[i].price});`;
+    await new mssql.Request().query(insertPurchaseReceiptDetailQuery);
   }
-
   try {
     return res.status(200).json({
-      message: "Create a new bill success",
-      metadata: results,
+      message: "Create a new purchase receipts success",
+      metadata: newReceipt,
     });
   } catch (error) {}
 });
