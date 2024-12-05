@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="formbold-main-wrapper">
+      <div class="formbold-form-wrapper">
+        <form>
+          <div class="formbold-mb-5">
+            <label for="name" class="formbold-form-label"> Supplier </label>
+            <input
+              type="text"
+              name="supplier"
+              id="supplier"
+              placeholder="Nhà Cung Cấp"
+              class="formbold-form-input"
+            />
+          </div>
+
+          <div class="flex flex-wrap formbold--mx-3">
+            <div class="w-full sm:w-half formbold-px-3">
+              <div class="formbold-mb-5 w-full">
+                <label for="date" class="formbold-form-label">
+                  Ngày Giao
+                </label>
+                <input
+                  type="date"
+                  name="date"
+                  id="date"
+                  class="formbold-form-input"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="formbold-mb-5 formbold-pt-3">
+            <label class="formbold-form-label formbold-form-label-2">
+              Dịch Vụ
+            </label>
+            <div
+              style="
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+              "
+            >
+              <div class="formbold-mb-5 service_list">
+                <select
+                  style="height: 43px"
+                  class="service_select"
+                  name=""
+                  id=""
+                >
+                  <option value="0">Dịch Vụ</option>
+                  <option value="1">Bánh mì</option>
+                </select>
+              </div>
+              <div class="formbold-mb-5">
+                <input
+                  type="number"
+                  name="quantity"
+                  id="quantity"
+                  placeholder="Số Lượng"
+                  class="formbold-form-input"
+                />
+              </div>
+              <div class="formbold-mb-5 service_list">
+                <input
+                  type="number"
+                  name="price"
+                  id="price"
+                  placeholder="Giá Tiền"
+                  class="formbold-form-input"
+                />
+              </div>
+              <button
+                style="width: 100px"
+                class="add_service_button formbold-btn"
+              >
+                +
+              </button>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: row; margin-left: 25px">
+            <label for="name" class="formbold-form-label column">
+              Dịch Vụ
+            </label>
+            <label
+              style="margin-left: 30px"
+              for="name"
+              class="formbold-form-label column"
+            >
+              Số lượng
+            </label>
+            <label
+              style="margin-left: 12px"
+              for="name"
+              class="formbold-form-label column"
+            >
+              Giá Tiền
+            </label>
+          </div>
+          <div class="inserted_data"></div>
+          <div>
+            <button class="formbold-btn submit_button">
+              Tạo Phiếu Nhập Kho
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

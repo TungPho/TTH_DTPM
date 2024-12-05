@@ -6,7 +6,7 @@ class Database {
   }
   async connect(type = "SQL_SERVER") {
     const con = await mssql.connect(configMSQL);
-    if (con) console.log("Connected to SQL Server");
+    if (con) console.log(`Connected to SQL Server DB ${configMSQL.database}`);
   }
   static getDatabase() {
     if (!this.database) {
